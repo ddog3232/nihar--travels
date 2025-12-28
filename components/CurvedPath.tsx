@@ -12,19 +12,13 @@ interface PlanePosition {
   angle: number;
 }
 
-interface TrailPoint {
-  x: number;
-  y: number;
-}
-
 const CurvedPath: React.FC<CurvedPathProps> = ({ scrollProgress, activeIndex }) => {
   const [dimensions, setDimensions] = useState({ width: window.innerWidth, height: window.innerHeight });
   const [pathLength, setPathLength] = useState(0); 
   const [planePos, setPlanePos] = useState<PlanePosition>({ x: 0, y: 0, angle: 0 });
   const [isPathReady, setIsPathReady] = useState(false);
-  const [vaporTrail, setVaporTrail] = useState<TrailPoint[]>([]);
+  const [flipX, setFlipX] = useState(false); // Track if plane should be flipped horizontally
   const pathRef = useRef<SVGPathElement>(null);
-  const trailMaxLength = 10; // Number of points in vapor trail
   const planeYOffset = -35; // Hover above the path/dots
 
   useEffect(() => {
@@ -105,21 +99,28 @@ const CurvedPath: React.FC<CurvedPathProps> = ({ scrollProgress, activeIndex }) 
     
     // Only update angle if there's meaningful movement (avoid jitter at endpoints)
     let angle = planePos.angle;
-    if (Math.abs(dx) > 0.1 || Math.abs(dy) > 0.1) {
-      angle = Math.atan2(dy, dx) * (180 / Math.PI);
-      // Adjust angle: -25 degrees to point plane nose forward
-      angle = angle - 25;
-    }
+    let isMovingLeft = false;
     
-    // Update vapor trail with new position
-    setVaporTrail(prev => {
-      const newTrail = [...prev, { x: point.x, y: point.y + planeYOffset }];
-      // Keep only the last N points
-      if (newTrail.length > trailMaxLength) {
-        return newTrail.slice(-trailMaxLength);
+    if (Math.abs(dx) > 0.1 || Math.abs(dy) > 0.1) {
+      isMovingLeft = dx < -0.5;
+      
+      if (isMovingLeft) {
+        // Mirror the angle for left-going segments
+        // Use mirrored dx to calculate angle as if going right
+        angle = Math.atan2(dy, -dx) * (180 / Math.PI);
+        angle = -angle - 25; // Mirror and adjust
+      } else {
+        angle = Math.atan2(dy, dx) * (180 / Math.PI);
+        angle = angle - 25;
       }
-      return newTrail;
-    });
+      
+      // Update flipX state
+      if (isMovingLeft) {
+        setFlipX(true);
+      } else if (dx > 0.5) {
+        setFlipX(false);
+      }
+    }
     
     setPlanePos({ x: point.x, y: point.y, angle });
   }, [scrollProgress, pathLength, isPathReady, planePos.angle]);
@@ -140,8 +141,6 @@ const CurvedPath: React.FC<CurvedPathProps> = ({ scrollProgress, activeIndex }) 
       const initialAngle = Math.atan2(dy, dx) * (180 / Math.PI) - 25;
       
       setPlanePos({ x: startPoint.x, y: startPoint.y, angle: initialAngle });
-      // Initialize vapor trail at start position
-      setVaporTrail([{ x: startPoint.x, y: startPoint.y + planeYOffset }]);
     }
   }, [isPathReady, pathLength]);
 
@@ -155,14 +154,6 @@ const CurvedPath: React.FC<CurvedPathProps> = ({ scrollProgress, activeIndex }) 
   // Responsive plane size: smaller on mobile
   const isMobile = dimensions.width < 768;
   const planeSize = isMobile ? 45 : 70;
-
-  // Generate vapor trail path
-  const vaporTrailPath = useMemo(() => {
-    if (vaporTrail.length < 2) return '';
-    return vaporTrail.map((point, i) => 
-      i === 0 ? `M ${point.x} ${point.y}` : `L ${point.x} ${point.y}`
-    ).join(' ');
-  }, [vaporTrail]);
 
   return (
     <div className="fixed inset-0 z-10 pointer-events-none flex items-center justify-center">
@@ -240,29 +231,6 @@ const CurvedPath: React.FC<CurvedPathProps> = ({ scrollProgress, activeIndex }) 
             );
         })}
 
-        {/* Vapor Trail - fading line behind plane */}
-        {isPathReady && vaporTrail.length > 1 && (
-          <defs>
-            <linearGradient id="vaporGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="rgba(255,255,255,0)" />
-              <stop offset="100%" stopColor="rgba(255,255,255,0.6)" />
-            </linearGradient>
-          </defs>
-        )}
-        {isPathReady && vaporTrail.length > 1 && (
-          <path
-            d={vaporTrailPath}
-            fill="none"
-            stroke="url(#vaporGradient)"
-            strokeWidth="3"
-            strokeLinecap="round"
-            opacity="0.5"
-            style={{
-              transition: 'opacity 0.2s ease-out'
-            }}
-          />
-        )}
-
         {/* Animated Plane - only render when path is ready */}
         {isPathReady && (
           <g
@@ -272,7 +240,7 @@ const CurvedPath: React.FC<CurvedPathProps> = ({ scrollProgress, activeIndex }) 
               willChange: 'transform'
             }}
           >
-            {/* Enhanced shadow for depth */}
+            {/* Enhanced shadow for depth - always at bottom */}
             <ellipse
               cx="0"
               cy={planeSize / 2 + 15}
@@ -286,7 +254,7 @@ const CurvedPath: React.FC<CurvedPathProps> = ({ scrollProgress, activeIndex }) 
             />
             {/* Plane image with bounce animation */}
             <image
-              href="./Images/Plane.png"
+              href="./Images/plane small.png"
               width={planeSize}
               height={planeSize}
               x={-planeSize / 2}
@@ -294,7 +262,8 @@ const CurvedPath: React.FC<CurvedPathProps> = ({ scrollProgress, activeIndex }) 
               className="animate-plane-bounce"
               style={{
                 filter: 'drop-shadow(0px 6px 12px rgba(0, 0, 0, 0.5))',
-                transform: 'scaleX(-1)'
+                transform: flipX ? 'scaleX(-1)' : 'scaleX(-1)',
+                transition: 'transform 0.3s ease-out'
               }}
             />
           </g>

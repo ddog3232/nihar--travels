@@ -114,16 +114,14 @@ const App: React.FC = () => {
             className="flex items-center gap-3 pointer-events-auto cursor-pointer group relative z-50"
             onClick={() => handleNavClick('home')}
         >
-            <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-nihar-gold bg-nihar-dark shadow-lg flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
-                <div className="bg-nihar-gold w-full h-full p-1">
+            <div className="w-14 h-14 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
                    <img 
-                    src="https://image.pollinations.ai/prompt/travel_logo_airplane_sun_vector_flat_minimalist?width=200&height=200&seed=niharholidays&nologo=true" 
-                    alt="NIHAR Holidays Logo" 
-                    className="w-full h-full object-cover rounded-full" 
+                    src="./Images/Plane.png" 
+                    alt="NIHAR Travels Logo" 
+                    className="w-full h-full object-contain" 
                   />
-                </div>
             </div>
-            <span className="text-2xl font-serif font-bold tracking-wider text-white drop-shadow-md">NIHAR <span className="text-nihar-gold font-light">Holidays</span></span>
+            <span className="text-2xl font-serif font-bold tracking-wider text-white drop-shadow-md">NIHAR <span className="text-nihar-gold font-light">Travels</span></span>
         </div>
 
         {/* Desktop Menu */}

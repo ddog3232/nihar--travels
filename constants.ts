@@ -4,7 +4,7 @@ export const DESTINATIONS: Destination[] = [
   {
     id: 'intro',
     name: 'Start Your Journey',
-    region: 'NIHAR Holidays',
+    region: 'NIHAR Travels',
     description: 'Embark on a soul-stirring journey through the heart of India and beyond. Scroll to explore our curated destinations.',
     highlights: [],
     image: 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?q=80&w=1920&auto=format&fit=crop', 
@@ -20,7 +20,7 @@ export const DESTINATIONS: Destination[] = [
     coordinates: { x: 80, y: 32 },
     testimonial: {
       text: "The evening Aarti at Parmarth Niketan changed my life. NIHAR Travels arranged the perfect view.",
-      author: "Sarah J."
+      author: "Shristi Jain"
     }
   },
   {
@@ -59,7 +59,7 @@ export const DESTINATIONS: Destination[] = [
     coordinates: { x: 30, y: 75 },
     testimonial: {
       text: "The bike trip arranged by NIHAR was flawless. The support team was amazing.",
-      author: "Mike T."
+      author: "Mahesh T."
     }
   },
   {
