@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "Bash(npm install:*)",
-      "Bash(npm run dev:*)"
+      "Bash(npm run dev:*)",
+      "Skill(vibe-to-spec)",
+      "Skill(vibe-to-spec:*)"
     ],
     "deny": [],
     "ask": []
