@@ -21,10 +21,22 @@ const InfoCards: React.FC<InfoCardsProps> = ({ onScroll }) => {
       const progress = Math.min(Math.max(rawProgress, 0), 1);
       
       const sectionHeight = windowHeight;
-      const activeIndex = Math.min(
+      
+      // Calculate base index with standard 50% threshold
+      let activeIndex = Math.min(
         Math.floor((scrollTop + sectionHeight * 0.5) / sectionHeight),
         DESTINATIONS.length - 1
       );
+      
+      // Delay image transition for Ladakh (index 4) and Varanasi (index 5) by 20%
+      // Check if we're approaching these sections and apply delayed threshold (0.7 instead of 0.5)
+      const delayedIndices = [4, 5]; // Ladakh and Varanasi
+      for (const delayedIndex of delayedIndices) {
+        const delayedThreshold = (delayedIndex * sectionHeight) - (sectionHeight * 0.3);
+        if (scrollTop < delayedThreshold && activeIndex === delayedIndex) {
+          activeIndex = delayedIndex - 1;
+        }
+      }
 
       onScroll(progress, activeIndex);
     };

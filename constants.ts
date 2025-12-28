@@ -96,7 +96,7 @@ export const DOMESTIC_PACKAGES: TravelPackage[] = [
     location: 'Kashmir',
     duration: '6 Days / 5 Nights',
     price: '₹28,500',
-    image: 'https://images.unsplash.com/photo-1595846519845-68e298c2edd8?q=80&w=800',
+    image: './Images/Kashmir.jpg',
     features: ['Houseboat Stay', 'Gulmarg Gondola', 'Private Cab']
   },
   {
@@ -114,7 +114,7 @@ export const DOMESTIC_PACKAGES: TravelPackage[] = [
     location: 'Manali & Shimla',
     duration: '7 Days / 6 Nights',
     price: '₹22,000',
-    image: 'https://images.unsplash.com/photo-1605649487215-476786e5b4e4?q=80&w=800',
+    image: './Images/Shimla-Manali-Tour-6.jpg',
     features: ['Solang Valley', 'Rohtang Pass', 'Bonfire Night']
   }
 ];
@@ -135,7 +135,7 @@ export const INTERNATIONAL_PACKAGES: TravelPackage[] = [
     location: 'UAE',
     duration: '5 Days / 4 Nights',
     price: '₹45,999',
-    image: 'https://images.unsplash.com/photo-1512453979798-5ea932a23518?q=80&w=800',
+    image: './Images/UAE.jpg',
     features: ['Desert Safari', 'Burj Khalifa Top', 'Dhow Cruise']
   },
   {
