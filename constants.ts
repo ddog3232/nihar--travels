@@ -19,7 +19,7 @@ export const DESTINATIONS: Destination[] = [
     image: '/Images/rishikesh.jpg', 
     coordinates: { x: 80, y: 32 },
     testimonial: {
-      text: "The evening Aarti at Parmarth Niketan changed my life. NIHAR Travels arranged the perfect view.",
+      text: "The Evening Aarti at Parmarth Niketan changed my life. NIHAR Travels arranged the perfect view.",
       author: "Shristi Jain"
     }
   },
