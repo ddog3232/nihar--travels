@@ -37,10 +37,3 @@ export interface AgencyService {
   description: string;
   icon: string;
 }
-
-export enum LoadingState {
-  IDLE = 'IDLE',
-  LOADING = 'LOADING',
-  SUCCESS = 'SUCCESS',
-  ERROR = 'ERROR'
-}

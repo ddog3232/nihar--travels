@@ -1,10 +1,5 @@
 import React, { useState } from 'react';
-import { generateTripPlan } from '../services/geminiService';
-import { TripPlanRequest, LoadingState } from '../types';
-import ReactMarkdown from 'react-markdown'; // Assuming we can't install packages, I will do a simple text render if this fails, but usually ReactMarkdown is standard. Wait, prompt says "Use popular and existing libraries". I will assume standard usage.
-// Actually, to be safe from import errors in the response environment without package.json control, I will implement a simple parser or just render whitespace.
-// Re-reading: "Use popular and existing libraries... Do not use mock or made-up libraries."
-// I will skip 'react-markdown' to avoid build setup issues in this specific instruction context and just use `white-space: pre-wrap` which works great for markdown-like text from Gemini.
+import { TripPlanRequest } from '../types';
 
 const AIPlanner: React.FC = () => {
   const [formData, setFormData] = useState<TripPlanRequest>({
@@ -13,23 +8,15 @@ const AIPlanner: React.FC = () => {
     travelers: 'Couple',
     budget: 'Luxury'
   });
-  const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.IDLE);
-  const [plan, setPlan] = useState<string>('');
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.destination) return;
 
-    setLoadingState(LoadingState.LOADING);
-    try {
-      const result = await generateTripPlan(formData);
-      setPlan(result);
-      setLoadingState(LoadingState.SUCCESS);
-    } catch (error) {
-        console.error(error);
-      setLoadingState(LoadingState.ERROR);
-    }
+    const message = `Hi NIHAR Travels, I'm interested in planning a trip to ${formData.destination} for ${formData.days} days. We are ${formData.travelers} looking for a ${formData.budget} experience. Please provide a custom itinerary.`;
+    window.open(`https://wa.me/919725949113?text=${encodeURIComponent(message)}`, '_blank');
+    setIsOpen(false);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -42,8 +29,8 @@ const AIPlanner: React.FC = () => {
             onClick={() => setIsOpen(true)}
             className="fixed bottom-6 right-6 z-50 bg-nihar-gold text-nihar-dark px-6 py-4 rounded-full shadow-lg font-bold hover:bg-white transition-colors flex items-center gap-2 group"
         >
-            <span className="text-xl">✨</span> 
-            <span>Plan with AI</span>
+            <span className="text-xl">📅</span> 
+            <span>Plan Your Trip</span>
         </button>
       );
   }
@@ -54,8 +41,8 @@ const AIPlanner: React.FC = () => {
         {/* Header */}
         <div className="p-6 border-b border-gray-800 flex justify-between items-center bg-gray-900/50">
             <div>
-                <h2 className="text-2xl font-serif text-nihar-gold">NIHAR AI Planner</h2>
-                <p className="text-gray-400 text-sm">Your intelligent travel companion</p>
+                <h2 className="text-2xl font-serif text-nihar-gold">Plan Your Journey</h2>
+                <p className="text-gray-400 text-sm">Tell us your dream destination</p>
             </div>
             <button onClick={() => setIsOpen(false)} className="text-gray-400 hover:text-white">
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
@@ -64,7 +51,6 @@ const AIPlanner: React.FC = () => {
 
         {/* Content */}
         <div className="flex-1 overflow-y-auto p-6">
-            {loadingState === LoadingState.IDLE || loadingState === LoadingState.LOADING ? (
                  <form onSubmit={handleSubmit} className="space-y-6">
                  <div>
                    <label className="block text-sm font-medium text-gray-400 mb-1">Where do you want to go?</label>
@@ -122,32 +108,18 @@ const AIPlanner: React.FC = () => {
  
                  <button
                    type="submit"
-                   disabled={loadingState === LoadingState.LOADING}
-                   className={`w-full bg-gradient-to-r from-nihar-gold to-yellow-600 text-black font-bold py-4 rounded-lg shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1 ${
-                     loadingState === LoadingState.LOADING ? 'opacity-70 cursor-wait' : ''
-                   }`}
+                   className="w-full bg-gradient-to-r from-nihar-gold to-yellow-600 text-black font-bold py-4 rounded-lg shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1"
                  >
-                   {loadingState === LoadingState.LOADING ? 'Consulting Gemini...' : 'Generate Itinerary'}
+                   Get Custom Itinerary on WhatsApp
                  </button>
                </form>
-            ) : (
-                <div className="space-y-6">
-                    <div className="prose prose-invert max-w-none">
-                        <div className="whitespace-pre-wrap text-gray-200 font-light leading-relaxed">
-                            {plan}
-                        </div>
-                    </div>
-                    <button 
-                        onClick={() => setLoadingState(LoadingState.IDLE)}
-                        className="text-nihar-gold hover:text-white underline text-sm"
-                    >
-                        Plan another trip
-                    </button>
-                </div>
-            )}
         </div>
       </div>
     </div>
+  );
+};
+
+export default AIPlanner;
   );
 };
 
