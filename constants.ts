@@ -27,7 +27,7 @@ export const DESTINATIONS: Destination[] = [
     id: 'munnar',
     name: 'Munnar',
     region: 'Kerala, India',
-    description: 'Endless Tea plantations and misty rolling hills. A perfect escape into nature’s lap in God’s Own Country.',
+    description: 'Endless tea plantations and misty rolling hills. A perfect escape into nature’s lap in God’s Own Country.',
     highlights: ['Tea Gardens', 'Eravikulam Park', 'Tree Houses'],
     image: '/Images/munnar.jpg',
     coordinates: { x: 20, y: 46 },
