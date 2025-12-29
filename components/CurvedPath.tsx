@@ -111,7 +111,7 @@ const CurvedPath: React.FC<CurvedPathProps> = ({ scrollProgress, activeIndex }) 
         angle = -angle - 25; // Mirror and adjust
       } else {
         angle = Math.atan2(dy, dx) * (180 / Math.PI);
-        angle = angle - 25;
+        angle = angle + 25;
       }
 
       // Update flipX state
