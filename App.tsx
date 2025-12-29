@@ -115,13 +115,13 @@ const App: React.FC = () => {
             onClick={() => handleNavClick('home')}
         >
             <div className="w-14 h-14 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
-                   <img 
-                    src="/Images/Plane.png" 
-                    alt="NIHAR Travels Logo" 
-                    className="w-full h-full object-contain" 
+                   <img
+                    src="/Images/Plane.png"
+                    alt="NIHAR Holidays Logo"
+                    className="w-full h-full object-contain"
                   />
             </div>
-            <span className="text-2xl font-serif font-bold tracking-wider text-white drop-shadow-md">NIHAR <span className="text-nihar-gold font-light">Travels</span></span>
+            <span className="text-2xl font-serif font-bold tracking-wider text-white drop-shadow-md">NIHAR <span className="text-nihar-gold font-light">Holidays</span></span>
         </div>
 
         {/* Desktop Menu */}

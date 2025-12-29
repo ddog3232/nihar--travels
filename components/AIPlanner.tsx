@@ -14,7 +14,7 @@ const AIPlanner: React.FC = () => {
     e.preventDefault();
     if (!formData.destination) return;
 
-    const message = `Hi NIHAR Travels, I'm interested in planning a trip to ${formData.destination} for ${formData.days} days. We are ${formData.travelers} looking for a ${formData.budget} experience. Please provide a custom itinerary.`;
+    const message = `Hi NIHAR Holidays, I'm interested in planning a trip to ${formData.destination} for ${formData.days} days. We are ${formData.travelers} looking for a ${formData.budget} experience. Please provide a custom itinerary.`;
     window.open(`https://wa.me/919725949113?text=${encodeURIComponent(message)}`, '_blank');
     setIsOpen(false);
   };

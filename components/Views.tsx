@@ -54,7 +54,7 @@ export const ContactView: React.FC = () => (
                 
                 <div className="relative z-10 space-y-6">
                     <div className="border-b border-white/10 pb-6">
-                        <h3 className="text-2xl font-serif text-nihar-gold mb-1">NIHAR TRAVELS</h3>
+                        <h3 className="text-2xl font-serif text-nihar-gold mb-1">NIHAR HOLIDAYS</h3>
                         <p className="text-gray-400 text-sm tracking-wide">Your Gateway to the World</p>
                     </div>
 
@@ -107,7 +107,7 @@ export const ContactView: React.FC = () => (
         </div>
         
         <div className="text-center mt-12 pt-8 border-t border-white/5">
-            <p className="text-gray-500 text-sm">© {new Date().getFullYear()} NIHAR Travels. All rights reserved.</p>
+            <p className="text-gray-500 text-sm">© {new Date().getFullYear()} NIHAR Holidays. All rights reserved.</p>
         </div>
     </div>
   </div>
