@@ -14,7 +14,7 @@ interface PlanePosition {
 
 const CurvedPath: React.FC<CurvedPathProps> = ({ scrollProgress, activeIndex }) => {
   const [dimensions, setDimensions] = useState({ width: window.innerWidth, height: window.innerHeight });
-  const [pathLength, setPathLength] = useState(0); 
+  const [pathLength, setPathLength] = useState(0);
   const [planePos, setPlanePos] = useState<PlanePosition>({ x: 0, y: 0, angle: 0 });
   const [isPathReady, setIsPathReady] = useState(false);
   const [flipX, setFlipX] = useState(false); // Track if plane should be flipped horizontally
@@ -28,7 +28,7 @@ const CurvedPath: React.FC<CurvedPathProps> = ({ scrollProgress, activeIndex }) 
         height: window.innerHeight
       });
     };
-    
+
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
@@ -43,19 +43,19 @@ const CurvedPath: React.FC<CurvedPathProps> = ({ scrollProgress, activeIndex }) 
     if (DESTINATIONS.length === 0) return '';
 
     let d = `M ${getX(DESTINATIONS[0].coordinates.x)} ${getY(DESTINATIONS[0].coordinates.y)}`;
-    
+
     for (let i = 0; i < DESTINATIONS.length - 1; i++) {
       const p1 = DESTINATIONS[i].coordinates;
       const p2 = DESTINATIONS[i + 1].coordinates;
-      
+
       const x1 = getX(p1.x);
       const y1 = getY(p1.y);
       const x2 = getX(p2.x);
       const y2 = getY(p2.y);
-      
+
       const cp1y = y1 + (y2 - y1) / 2;
       const cp2y = y1 + (y2 - y1) / 2;
-      
+
       d += ` C ${x1} ${cp1y}, ${x2} ${cp2y}, ${x2} ${y2}`;
     }
     return d;
@@ -64,9 +64,9 @@ const CurvedPath: React.FC<CurvedPathProps> = ({ scrollProgress, activeIndex }) 
   // Update path length when path data changes (including on resize)
   useEffect(() => {
     if (pathRef.current) {
-        const length = pathRef.current.getTotalLength();
-        setPathLength(length);
-        setIsPathReady(true);
+      const length = pathRef.current.getTotalLength();
+      setPathLength(length);
+      setIsPathReady(true);
     }
   }, [pathData]);
 
@@ -76,34 +76,34 @@ const CurvedPath: React.FC<CurvedPathProps> = ({ scrollProgress, activeIndex }) 
     if (!pathRef.current || pathLength === 0 || !isPathReady) {
       return;
     }
-    
+
     const path = pathRef.current;
-    
+
     // Clamp scroll progress to valid range [0, 1]
     const clampedProgress = Math.min(Math.max(scrollProgress, 0), 1);
-    
+
     // Calculate current distance along path, clamped to pathLength
     const currentLength = Math.min(clampedProgress * pathLength, pathLength);
-    
+
     // Get current point on path (handles scrollProgress = 0 case - starts at first destination)
     const point = path.getPointAtLength(currentLength);
-    
+
     // Get a point slightly ahead to calculate angle
     const lookAheadDistance = 20;
     const aheadLength = Math.min(currentLength + lookAheadDistance, pathLength);
     const aheadPoint = path.getPointAtLength(aheadLength);
-    
+
     // Calculate angle in degrees
     const dx = aheadPoint.x - point.x;
     const dy = aheadPoint.y - point.y;
-    
+
     // Only update angle if there's meaningful movement (avoid jitter at endpoints)
     let angle = planePos.angle;
     let isMovingLeft = false;
-    
+
     if (Math.abs(dx) > 0.1 || Math.abs(dy) > 0.1) {
       isMovingLeft = dx < -0.5;
-      
+
       if (isMovingLeft) {
         // Mirror the angle for left-going segments
         // Use mirrored dx to calculate angle as if going right
@@ -113,7 +113,7 @@ const CurvedPath: React.FC<CurvedPathProps> = ({ scrollProgress, activeIndex }) 
         angle = Math.atan2(dy, dx) * (180 / Math.PI);
         angle = angle - 25;
       }
-      
+
       // Update flipX state
       if (isMovingLeft) {
         setFlipX(true);
@@ -121,7 +121,7 @@ const CurvedPath: React.FC<CurvedPathProps> = ({ scrollProgress, activeIndex }) 
         setFlipX(false);
       }
     }
-    
+
     setPlanePos({ x: point.x, y: point.y, angle });
   }, [scrollProgress, pathLength, isPathReady, planePos.angle]);
 
@@ -139,16 +139,16 @@ const CurvedPath: React.FC<CurvedPathProps> = ({ scrollProgress, activeIndex }) 
       const dx = aheadPoint.x - startPoint.x;
       const dy = aheadPoint.y - startPoint.y;
       const initialAngle = Math.atan2(dy, dx) * (180 / Math.PI) - 25;
-      
+
       setPlanePos({ x: startPoint.x, y: startPoint.y, angle: initialAngle });
     }
   }, [isPathReady, pathLength]);
 
   const handleDotClick = (index: number) => {
-      window.scrollTo({
-          top: index * window.innerHeight,
-          behavior: 'smooth'
-      });
+    window.scrollTo({
+      top: index * window.innerHeight,
+      behavior: 'smooth'
+    });
   };
 
   // Responsive plane size: smaller on mobile
@@ -165,10 +165,10 @@ const CurvedPath: React.FC<CurvedPathProps> = ({ scrollProgress, activeIndex }) 
         style={{ filter: 'drop-shadow(0px 0px 10px rgba(212, 175, 55, 0.6))' }}
       >
         <path
-            ref={pathRef}
-            d={pathData}
-            fill="none"
-            stroke="none"
+          ref={pathRef}
+          d={pathData}
+          fill="none"
+          stroke="none"
         />
 
         {/* Base Path */}
@@ -193,42 +193,42 @@ const CurvedPath: React.FC<CurvedPathProps> = ({ scrollProgress, activeIndex }) 
 
         {/* Destination Dots */}
         {DESTINATIONS.map((dest, index) => {
-            const x = (dest.coordinates.x / 100) * dimensions.width;
-            const y = (dest.coordinates.y / 100) * dimensions.height;
-            
-            const isActive = index <= activeIndex;
-            const isCurrent = index === activeIndex;
-            
-            return (
-                <g 
-                    key={dest.id} 
-                    className="transition-all duration-500 cursor-pointer pointer-events-auto"
-                    onClick={() => handleDotClick(index)}
-                >
-                    {/* Invisible Hit Area for easier clicking */}
-                    <circle cx={x} cy={y} r={20} fill="transparent" />
-                    
-                    {/* Visible Dot */}
-                    <circle
-                        cx={x}
-                        cy={y}
-                        r={isCurrent ? 8 : 5}
-                        fill={isActive ? "#D4AF37" : "rgba(255,255,255,0.3)"}
-                        className={`transition-all duration-500 ${isCurrent ? 'animate-pulse' : ''}`}
-                    />
-                     <text
-                        x={x}
-                        y={y}
-                        dy={-20}
-                        textAnchor="middle"
-                        fontSize="14"
-                        fill={isActive ? "#FFF" : "transparent"}
-                        className={`font-serif font-bold transition-all duration-500 drop-shadow-md tracking-wider select-none ${isCurrent ? 'opacity-100' : 'opacity-0'}`}
-                    >
-                        {dest.name}
-                    </text>
-                </g>
-            );
+          const x = (dest.coordinates.x / 100) * dimensions.width;
+          const y = (dest.coordinates.y / 100) * dimensions.height;
+
+          const isActive = index <= activeIndex;
+          const isCurrent = index === activeIndex;
+
+          return (
+            <g
+              key={dest.id}
+              className="transition-all duration-500 cursor-pointer pointer-events-auto"
+              onClick={() => handleDotClick(index)}
+            >
+              {/* Invisible Hit Area for easier clicking */}
+              <circle cx={x} cy={y} r={20} fill="transparent" />
+
+              {/* Visible Dot */}
+              <circle
+                cx={x}
+                cy={y}
+                r={isCurrent ? 8 : 5}
+                fill={isActive ? "#D4AF37" : "rgba(255,255,255,0.3)"}
+                className={`transition-all duration-500 ${isCurrent ? 'animate-pulse' : ''}`}
+              />
+              <text
+                x={x}
+                y={y}
+                dy={-20}
+                textAnchor="middle"
+                fontSize="14"
+                fill={isActive ? "#FFF" : "transparent"}
+                className={`font-serif font-bold transition-all duration-500 drop-shadow-md tracking-wider select-none ${isCurrent ? 'opacity-100' : 'opacity-0'}`}
+              >
+                {dest.name}
+              </text>
+            </g>
+          );
         })}
 
         {/* Animated Plane - only render when path is ready */}
@@ -252,20 +252,26 @@ const CurvedPath: React.FC<CurvedPathProps> = ({ scrollProgress, activeIndex }) 
                 transform: 'translateY(5px)'
               }}
             />
-            {/* Plane image with bounce animation */}
-            <image
-              href="/Images/plane small.png"
-              width={planeSize}
-              height={planeSize}
-              x={-planeSize / 2}
-              y={-planeSize / 2}
-              className="animate-plane-bounce"
+            {/* Plane image with bounce animation and flip */}
+            <g
               style={{
-                filter: 'drop-shadow(0px 6px 12px rgba(0, 0, 0, 0.5))',
-                transform: flipX ? 'scaleX(-1)' : 'scaleX(-1)',
-                transition: 'transform 0.3s ease-out'
+                transform: flipX ? 'scaleX(-1)' : 'scaleX(1)',
+                transformOrigin: '0 0',
+                transition: 'transform 0.4s ease-in-out'
               }}
-            />
+            >
+              <image
+                href="/Images/plane small.png"
+                width={planeSize}
+                height={planeSize}
+                x={-planeSize / 2}
+                y={-planeSize / 2}
+                className="animate-plane-bounce"
+                style={{
+                  filter: 'drop-shadow(0px 6px 12px rgba(0, 0, 0, 0.5))'
+                }}
+              />
+            </g>
           </g>
         )}
       </svg>
