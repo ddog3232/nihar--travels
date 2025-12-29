@@ -18,7 +18,9 @@ const CurvedPath: React.FC<CurvedPathProps> = ({ scrollProgress, activeIndex }) 
   const [planePos, setPlanePos] = useState<PlanePosition>({ x: 0, y: 0, angle: 0 });
   const [isPathReady, setIsPathReady] = useState(false);
   const [flipX, setFlipX] = useState(false); // Track if plane should be flipped horizontally
+  const [isScrollingBackward, setIsScrollingBackward] = useState(false); // Track scroll direction
   const pathRef = useRef<SVGPathElement>(null);
+  const prevScrollProgressRef = useRef(scrollProgress); // Track previous scroll position
   const planeYOffset = -35; // Hover above the path/dots
 
   useEffect(() => {
@@ -78,6 +80,17 @@ const CurvedPath: React.FC<CurvedPathProps> = ({ scrollProgress, activeIndex }) 
     }
 
     const path = pathRef.current;
+
+    // Detect scroll direction
+    const scrollingBackward = scrollProgress < prevScrollProgressRef.current - 0.001;
+    const scrollingForward = scrollProgress > prevScrollProgressRef.current + 0.001;
+
+    if (scrollingBackward) {
+      setIsScrollingBackward(true);
+    } else if (scrollingForward) {
+      setIsScrollingBackward(false);
+    }
+    prevScrollProgressRef.current = scrollProgress;
 
     // Clamp scroll progress to valid range [0, 1]
     const clampedProgress = Math.min(Math.max(scrollProgress, 0), 1);
@@ -234,7 +247,7 @@ const CurvedPath: React.FC<CurvedPathProps> = ({ scrollProgress, activeIndex }) 
         {/* Animated Plane - only render when path is ready */}
         {isPathReady && (
           <g
-            transform={`translate(${planePos.x}, ${planePos.y + planeYOffset}) rotate(${planePos.angle})`}
+            transform={`translate(${planePos.x}, ${planePos.y + planeYOffset}) rotate(${planePos.angle + (isScrollingBackward ? (flipX ? +30 : -45) : 0)})`}
             style={{
               transition: 'transform 0.15s ease-out',
               willChange: 'transform'
@@ -255,7 +268,7 @@ const CurvedPath: React.FC<CurvedPathProps> = ({ scrollProgress, activeIndex }) 
             {/* Plane image with bounce animation and flip */}
             <g
               style={{
-                transform: flipX ? 'scaleX(-1)' : 'scaleX(1)',
+                transform: (isScrollingBackward ? !flipX : flipX) ? 'scaleX(-1)' : 'scaleX(1)',
                 transformOrigin: '0 0',
                 transition: 'transform 0.4s ease-in-out'
               }}
