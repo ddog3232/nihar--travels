@@ -1,7 +1,7 @@
 import { GoogleGenAI } from "@google/genai";
 import { TripPlanRequest } from "../types";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
 
 export const generateTripPlan = async (request: TripPlanRequest): Promise<string> => {
   const model = "gemini-2.5-flash";
