@@ -81,13 +81,12 @@ const CurvedPath: React.FC<CurvedPathProps> = ({ scrollProgress, activeIndex }) 
 
     const path = pathRef.current;
 
-    // Detect scroll direction
-    const scrollingBackward = scrollProgress < prevScrollProgressRef.current - 0.001;
-    const scrollingForward = scrollProgress > prevScrollProgressRef.current + 0.001;
+    // Detect scroll direction - use very small threshold to catch auto-scroll
+    const scrollDelta = scrollProgress - prevScrollProgressRef.current;
 
-    if (scrollingBackward) {
+    if (scrollDelta < -0.0001) {
       setIsScrollingBackward(true);
-    } else if (scrollingForward) {
+    } else if (scrollDelta > 0.0001) {
       setIsScrollingBackward(false);
     }
     prevScrollProgressRef.current = scrollProgress;
