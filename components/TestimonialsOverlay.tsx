@@ -19,15 +19,16 @@ const TestimonialsOverlay: React.FC<TestimonialsOverlayProps> = ({ activeIndex }
           <div
             key={dest.id}
             className={`
-              absolute bottom-12 md:bottom-24 max-w-[85vw] md:max-w-xs 
+              absolute bottom-12 md:bottom-24 max-w-[85vw] md:max-w-xs
               transform will-change-transform
               transition-all duration-1000 ease-in-out
               ${isActive ? 'opacity-100 translate-y-0 scale-100 pointer-events-auto' : 'opacity-0 translate-y-8 scale-95 pointer-events-none'}
-              ${isPathLeft 
-                ? 'left-6 md:left-16 lg:left-24' 
+              ${isPathLeft
+                ? 'left-6 md:left-16 lg:left-24'
                 : 'right-6 md:right-16 lg:right-24 items-end text-right'
               }
               ${dest.id === 'ladakh' ? '!bottom-[55vh]' : ''}
+              ${dest.id === 'varanasi' ? '!bottom-48 md:!bottom-24' : ''}
               flex flex-col justify-end
             `}
           >
