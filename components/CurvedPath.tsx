@@ -254,7 +254,7 @@ const CurvedPath: React.FC<CurvedPathProps> = ({ scrollProgress, activeIndex }) 
             />
             {/* Plane image with bounce animation */}
             <image
-              href="./Images/plane small.png"
+              href="/Images/plane small.png"
               width={planeSize}
               height={planeSize}
               x={-planeSize / 2}

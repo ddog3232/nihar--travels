@@ -116,7 +116,7 @@ const App: React.FC = () => {
         >
             <div className="w-14 h-14 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
                    <img 
-                    src="./Images/Plane.png" 
+                    src="/Images/Plane.png" 
                     alt="NIHAR Travels Logo" 
                     className="w-full h-full object-contain" 
                   />

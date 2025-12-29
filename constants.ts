@@ -16,7 +16,7 @@ export const DESTINATIONS: Destination[] = [
     region: 'Uttarakhand, India',
     description: 'The Yoga Capital of the World. Find peace by the Ganges, adrenaline in the rapids, and spirituality in the air.',
     highlights: ['Ganga Aarti', 'River Rafting', 'Yoga Ashrams'],
-    image: './Images/rishikesh.jpg', 
+    image: '/Images/rishikesh.jpg', 
     coordinates: { x: 80, y: 32 },
     testimonial: {
       text: "The evening Aarti at Parmarth Niketan changed my life. NIHAR Travels arranged the perfect view.",
@@ -29,7 +29,7 @@ export const DESTINATIONS: Destination[] = [
     region: 'Kerala, India',
     description: 'Endless tea plantations and misty rolling hills. A perfect escape into nature’s lap in God’s Own Country.',
     highlights: ['Tea Gardens', 'Eravikulam Park', 'Tree Houses'],
-    image: './Images/munnar.jpg',
+    image: '/Images/munnar.jpg',
     coordinates: { x: 20, y: 46 },
     testimonial: {
       text: "Waking up above the clouds in a treehouse was magical. Highly recommended!",
@@ -68,7 +68,7 @@ export const DESTINATIONS: Destination[] = [
     region: 'Uttar Pradesh, India',
     description: 'One of the oldest living cities in the world. A chaotic, colorful, and spiritual experience on the ghats of the Ganges.',
     highlights: ['Kashi Vishwanath', 'Boat Ride', 'Sarnath'],
-    image: './Images/varanasi.jpg',
+    image: '/Images/varanasi.jpg',
     coordinates: { x: 60, y: 92 },
     testimonial: {
       text: "An intense, beautiful spiritual awakening. The boat ride at sunrise is a must.",
@@ -96,7 +96,7 @@ export const DOMESTIC_PACKAGES: TravelPackage[] = [
     location: 'Kashmir',
     duration: '6 Days / 5 Nights',
     price: '₹28,500',
-    image: './Images/Kashmir.jpg',
+    image: '/Images/Kashmir.jpg',
     features: ['Houseboat Stay', 'Gulmarg Gondola', 'Private Cab']
   },
   {
@@ -114,7 +114,7 @@ export const DOMESTIC_PACKAGES: TravelPackage[] = [
     location: 'Manali & Shimla',
     duration: '7 Days / 6 Nights',
     price: '₹22,000',
-    image: './Images/Shimla-Manali-Tour-6.jpg',
+    image: '/Images/Shimla-Manali-Tour-6.jpg',
     features: ['Solang Valley', 'Rohtang Pass', 'Bonfire Night']
   }
 ];
@@ -135,7 +135,7 @@ export const INTERNATIONAL_PACKAGES: TravelPackage[] = [
     location: 'UAE',
     duration: '5 Days / 4 Nights',
     price: '₹45,999',
-    image: './Images/UAE.jpg',
+    image: '/Images/UAE.jpg',
     features: ['Desert Safari', 'Burj Khalifa Top', 'Dhow Cruise']
   },
   {
